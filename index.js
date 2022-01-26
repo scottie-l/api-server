@@ -1,14 +1,11 @@
 'use strict';
 
-require('dotenv').config();
-const server = require('./lib/server.js');
-const PORT = process.env.PORT;
+const { start, app } = require('./lib/server.js');
+const { db } = require('./lib/models');
+const PORT = process.env.PORT || 3000;
 
-module.exports = {
-  start: (port) => {
-    app.listen(port, () => {
-      console.log('Server is running');
-    });
-  },
-  app,
-};
+// must import db, initialize it to perform routes/tests
+db.sync()
+  .then(() => start(PORT))
+  .catch(err => console.log(err));
+  
